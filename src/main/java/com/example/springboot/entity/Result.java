@@ -1,41 +1,51 @@
 package com.example.springboot.entity;
 
-public class Result {
+public abstract class Result<T> {
 
-    String status;
+    public enum ResultStatus {
+        OK("ok"),
+        FAIL("fail");
+
+        private String status;
+
+        ResultStatus(String status) {
+            this.status = status;
+        }
+    }
+
+    ResultStatus status;
     String msg;
-    boolean isLogin;
-    Object data;
+    T data;
 
-    public static Result failure(String message) {
-        return new Result("fail", message, false);
-    }
+//    public static Result failure(String message) {
+//        return new Result("fail", message, false);
+//    }
+//
+//    public static Result success(String message) {
+//        return new Result("ok", message, true);
+//    }
 
-    public static Result success(String message) {
-        return new Result("ok", message, true);
-    }
+//    protected Result(String status, String msg) {
+//        this(status, msg, null);
+//    }
 
-    public Result(String status, String msg, boolean isLogin) {
-        this(status, msg, isLogin, null);
-    }
-
-    public Result(String status, String msg, boolean isLogin, Object data) {
+    protected Result(ResultStatus status, String msg, T data) {
         this.status = status;
         this.msg = msg;
-        this.isLogin = isLogin;
         this.data = data;
     }
 
-    public String getStatus() {
-        return status;
+//    public static Result failure(String s) {
+//        return LoginResult.failure(s);
+//    }
+//
+
+    public java.lang.String getStatus() {
+        return status.status;
     }
 
-    public String getMsg() {
+    public java.lang.String getMsg() {
         return msg;
-    }
-
-    public boolean isLogin() {
-        return isLogin;
     }
 
     public Object getData() {

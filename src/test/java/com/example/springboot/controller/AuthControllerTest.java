@@ -87,6 +87,5 @@ class AuthControllerTest {
             System.out.println(result.getResponse().getContentAsString(StandardCharsets.UTF_8));
             Assertions.assertTrue(result.getResponse().getContentAsString(StandardCharsets.UTF_8).contains("MyUser"));
         });
-
     }
 }

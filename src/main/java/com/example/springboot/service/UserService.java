@@ -1,7 +1,7 @@
 package com.example.springboot.service;
 
 import com.example.springboot.entity.User;
-import com.example.springboot.mapper.UserMapper;
+import com.example.springboot.dao.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +37,10 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username + "不存在！");
         }
-        return new org.springframework.security.core.userdetails.
-                User(username, user.getEncryptedPassword(), Collections.emptyList());
+        return new org.springframework.security.core.userdetails.User(username, user.getEncryptedPassword(), Collections.emptyList());
+    }
+
+    public User getUserById(Integer userId) {
+        return this.userMapper.getUserById(userId);
     }
 }

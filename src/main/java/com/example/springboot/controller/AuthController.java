@@ -1,5 +1,6 @@
 package com.example.springboot.controller;
 
+import com.example.springboot.entity.LoginResult;
 import com.example.springboot.entity.Result;
 import com.example.springboot.entity.User;
 import com.example.springboot.service.UserService;
@@ -35,18 +36,18 @@ public class AuthController {
 
     @GetMapping("/auth")
     @ResponseBody
-    public Object auth() {
-//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Result auth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User loggedInUser = userService.getUserByUsername(
                 authentication == null ? null : authentication.getName());
-//        User loggedInUser = userService.getUserByUsername(userName);
         if (loggedInUser == null) {
-            return Result.failure("用户没有登录");
+            return LoginResult.success("用户没有登录", false);
         } else {
-            return new Result("ok", null, true, loggedInUser);
+            return LoginResult.success(loggedInUser);
         }
     }
+
+
 
     @GetMapping("/auth/logout")
     @ResponseBody
@@ -56,10 +57,10 @@ public class AuthController {
         User loggedInUser = userService.getUserByUsername(userName);
 
         if (loggedInUser == null) {
-            return Result.failure("用户没有登录");
+            return LoginResult.failure("用户没有登录");
         } else {
             SecurityContextHolder.clearContext();
-            return Result.success("注销成功");
+            return LoginResult.success("success", false);
         }
     }
 
@@ -70,23 +71,23 @@ public class AuthController {
         String password = usernameAndPassword.get("password");
 
         if (username == null || password == null) {
-            return Result.failure("username/password==null");
+            return LoginResult.failure("username/password==null");
         }
         if (username.length() < 1 || username.length() > 15) {
-            return Result.failure("invaild username");
+            return LoginResult.failure("invaild username");
         }
         if (password.length() < 1 || password.length() > 15) {
-            return Result.failure("invaild password");
+            return LoginResult.failure("invaild password");
         }
 
         try {
             userService.save(username, password);
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
-            return Result.failure("user already exists");
+            return LoginResult.failure("user already exists");
         }
 
-        return Result.success("success");
+        return LoginResult.success("success", userService.getUserByUsername(username));
     }
 
     @PostMapping("/auth/login")
@@ -100,7 +101,7 @@ public class AuthController {
         try {
             userDetails = userService.loadUserByUsername(username);
         } catch (UsernameNotFoundException e) {
-            return Result.failure("用户不存在 ");
+            return LoginResult.failure("用户不存在 ");
         }
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
@@ -108,11 +109,9 @@ public class AuthController {
             authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(token);
 
-            return new Result("ok", "登录成功", true,
-                    userService.getUserByUsername(username));
+            return LoginResult.success("登录成功", userService.getUserByUsername(username));
         } catch (BadCredentialsException e) {
-            return Result.failure("密码不正确");
+            return LoginResult.failure("密码不正确");
         }
     }
-
 }

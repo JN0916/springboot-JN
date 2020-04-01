@@ -1,7 +1,7 @@
 package com.example.springboot.service;
 
 import com.example.springboot.entity.User;
-import com.example.springboot.mapper.UserMapper;
+import com.example.springboot.dao.UserMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
