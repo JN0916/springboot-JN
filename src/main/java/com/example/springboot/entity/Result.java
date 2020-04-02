@@ -35,16 +35,11 @@ public abstract class Result<T> {
         this.data = data;
     }
 
-//    public static Result failure(String s) {
-//        return LoginResult.failure(s);
-//    }
-//
-
-    public java.lang.String getStatus() {
+    public String getStatus() {
         return status.status;
     }
 
-    public java.lang.String getMsg() {
+    public String getMsg() {
         return msg;
     }
 
