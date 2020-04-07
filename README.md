@@ -13,21 +13,17 @@
 
 ### 自动化测试
 
-* 代码质量
-
-  在 Maven 的 verify 周期绑定了 Checkstyle 和 SpotBugs 插件，以保证代码质量。
-
 * 单元测试
 
   提供对登录模块 UserService 及 AuthController 类的 JUnit 单元测试，使用 Mockito mock 相关依赖对象的行为，实现在不涉及依赖关系的情况下对单 元代码的测试，并配置 travisCI 实现对 Gtihub 项目的自动化测试。
 
 * 集成测试
 
-  对整个项目对外暴露的登录接口进行集成测试，使用 httpClient 模拟发送 http 请求，验证用户的正常登录操作及登录状态的维持情况。使用 `maven exec` 执行外部命令，实现在测试前自动启动数据库，Flyway 自动建表及插入初始数据，测试后自动销毁测试数据 库，为项目对外接口的功能提供保障。
+  对整个项目对外暴露的登录接口进行集成测试，使用 httpClient 模拟发送 http 请求，验证用户的正常登录操作及登录状态的维持情况。使用 `maven exec` 执行外部命令，实现在测试前自动启动数据库，Flyway 自动建表及插入初始数据，测试后自动销毁测试数据库，为项目对外接口的功能提供保障。
 
 * 自动化测试
 
-  配置 TravisCI 对 Github 仓库进行管理，使每次 commit 都自动进行以上测试，保证项目可演进性。
+  配置 TravisCI 对 Github 仓库进行管理，使每次 commit 都自动进行以上测试。
 
 ### How to build
 
